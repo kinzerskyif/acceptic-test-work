@@ -1,0 +1,17 @@
+.folder-container {
+  margin-left: 50px;
+  .root-container {
+    display: flex;
+    align-items: center;
+  }
+  .file-name {
+    cursor: pointer;
+    margin-left: 10px;
+  }
+  .folder-edit {
+    margin: 20px 0;
+  }
+}
+button {
+  margin-left: 10px;
+}

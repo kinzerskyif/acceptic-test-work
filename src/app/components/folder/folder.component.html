@@ -1,0 +1,32 @@
+<div class="folder-container">
+    <div class="root-container" *ngIf="!showFolderEdit">
+        <img src="/assets/folder.svg">
+        <input type="checkbox" [(ngModel)]="folder.isSelected" *ngIf="!folder.isRoot">
+        <h1>{{ folder.folderName }}</h1>
+        <div>
+            <button (click)="addFile()">file</button>
+            <button (click)="addFolder()">folder</button>
+            <button *ngIf="folder.isRoot" (click)="folderService.removeSelected()">remoove selected</button>
+            <button *ngIf="!folder.isRoot" (click)="editFolderName()">edit</button>
+        </div>
+    </div>
+    <div class="folder-edit" *ngIf="showFolderEdit">
+        <input [(ngModel)]="folderName">
+        <button (click)="saveFolderName()">save</button>
+    </div>
+    <app-folder *ngFor="let subFolder of folder.folders" [folder]="subFolder"></app-folder>
+    <ul>    
+        <li *ngFor="let file of folder.files; let i = index">
+            <ng-container *ngIf="fileIndex !== i; else editFile">
+                <input type="checkbox" [(ngModel)]="file.isSelected" (ngModelChange)="checkboxSelected(file)">
+                <span class="file-name" (click)="showConten(file.value)">{{ file.name }}</span>
+                <button (click)="editFileName(i)">edit</button>
+            </ng-container>
+            <ng-template #editFile>
+                <input [(ngModel)]="fileName">
+                <button (click)="saveFileName(i)">save</button>
+            </ng-template>
+            
+        </li>
+    </ul>
+</div>

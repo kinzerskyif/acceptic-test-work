@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>AccepticTestWork</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://cdn.paymeservice.com/hf/v1/hostedfields.js"></script>
+</head>
+<body>
+  <app-root></app-root>
+
+  <!-- PAYMENT FORM STARTS HERE -->
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12 col-md-4">
+      
+        <div class="panel panel-default credit-card-box">
+          <div class="panel-body">
+            <form role="form" id="checkout-form">
+  
+              <div class="row">
+                <div class="col-xs-12 col-md-12">
+                  <div class="form-group" id="card-number-group">
+                    <label for="card-number-container" class="control-label">CARD NUMBER</label>
+                    
+                    <!-- Container for Credit Card number field -->
+                    <div id="card-number-container" class="form-control input-lg"></div>
+
+                  </div>
+                </div>
+              </div>
+  
+              <div class="row">
+                <div class="col-xs-7 col-md-7">
+                  <div class="form-group" id="card-expiration-group">
+                    <label for="card-expiration-container" class="control-label">EXPIRATION DATE</label>
+                    
+                    <!-- Container for Credit Card expiration date field -->
+                    <div id="card-expiration-container" class="form-control input-lg"></div>
+                    
+                  </div>
+                </div>
+                <div class="col-xs-5 col-md-5 pull-right">
+                  <div class="form-group" id="card-cvv-group">
+                    <label for="card-cvv-container" class="control-label">CVV</label>
+                    
+                    <!-- Container for Credit Card CVV field -->
+                    <div id="card-cvv-container" class="form-control input-lg"></div>
+                    
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xs-12">
+                
+                  <!-- Form submit button -->
+                  <button class="subscribe btn btn-success btn-lg btn-block" id="submit-button">
+                    Pay 55.00 USD
+                  </button>
+                </div>
+              </div>
+  
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- PAYMENT FORM ENDS HERE -->
+
+  <script>
+
+    const form = document.getElementById('checkout-form');
+    var apiKey = 'ac76cbc1-9a83-47a4-82bd-1c82c4979fdd'; // Merchant API key from Settings page in the dashboard
+
+    PayMe.create(apiKey, { testMode: true }).then(function (instance) {
+
+      var fields = instance.hostedFields();
+      var cardNumber = fields.create('cardNumber');
+      var expiration = fields.create('cardExpiration');
+      var cvc = fields.create('cvc');
+
+      cardNumber.mount('#card-number-container');
+      expiration.mount('#card-expiration-container');
+      cvc.mount('#card-cvv-container');
+
+      var saleData = {
+        payerFirstName: 'Foo',
+        payerLastName: 'Bar',
+        payerEmail: 'foo-bar@domain.com',
+        payerPhone: '1231231',
+        payerSocialId: '12345',
+        payerZipCode: '123456',
+
+        total: {
+          label: 'Order #123123',
+          amount: {
+            currency: 'USD',
+            value: '0.01',
+          }
+        }
+      };
+
+      const formSubmit = ev => {
+      ev.preventDefault();
+
+      instance.tokenize(saleData)
+      .then(function (tokenizationResult) {
+        console.log(tokenizationResult);
+      })
+      .catch(function(tokenizationError) {
+        console.error(tokenizationError)
+      });
+    }
+
+    form.addEventListener('submit', formSubmit);
+
+    }).catch(function(error) {
+        console.log(error);
+    })
+
+</script>
+</body>
+</html>

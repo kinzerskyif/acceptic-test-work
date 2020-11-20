@@ -1,0 +1,13 @@
+<div class="main-container">
+    <app-folder [folder]="folderService.folder"></app-folder>
+    <div class="right-content">
+        <p>{{folderService.fileContent}}</p>
+        <div *ngIf="folderService.price > 0">
+            <h2 class="file-price">Price: {{folderService.price}}</h2>
+            <button (click)="pay()">Pay</button>
+        </div>
+        <div>
+            <iframe *ngIf="payUrl" [src]="sanitizer.bypassSecurityTrustResourceUrl(payUrl)" height="425" width="600"></iframe>
+        </div>
+    </div>
+</div>
